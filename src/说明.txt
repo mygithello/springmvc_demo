@@ -1,0 +1,12 @@
+1.验证码
+2.拦截器
+3.文件上传及下载
+4.文件如何存放至分布式文件系统中
+5.redis管理session
+6.日期类型的转换器的使用
+7.错误界面的管理
+8.sesion生命周期的管理
+9.大小工厂的应用
+10.异常的统一处理（com.demo.exception.handler.global） controller:HandlerController
+   不仅可以作用于Controller，同样的在DAO层、service层也可。
+   应用：通过自定义异常信息，可以向前端返回操作失败的具体错误信息。

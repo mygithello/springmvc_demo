@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+">
+
+
+    <!--mvc驱动：通过mvc标签读取mvc相关的注解-->
+    <!--<mvc:annotation-driven></mvc:annotation-driven>-->
+    <!--自定义日期类型的转换器3/3=====================start===========================-->
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+    <!--自定义日期类型的转换器3/3=====================END===========================-->
+
+    <!-- 1.开启spring的标签库 -->
+    <!--<context:component-scan base-package="com.demo.controller"></context:component-scan>-->
+
+    <!--捕获异常统一处理egone:3/3===============start==========================-->
+    <!--由于定义的统一异常处理类不在controller包下，需要扩大扫描范围，才能识别@ControllerAdvice注解-->
+    <context:component-scan base-package="com.demo"></context:component-scan>
+    <!--捕获异常统一处理egone:3/3===============End==========================-->
+
+    <!-- 2.加载mvc标签驱动 -->
+    <!--需要忽略掉静态资源的配置2.-->
+    <!-- 将请求交于springmvc处理.忽略静态资源，web中配置为"/",将静态资源的处理经由Spring MVC框架交回Web应用服务器处理-->
+    <!--<mvc:default-servlet-handler/>-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 3.视图管理器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--自定义日期类型的转换器2/3=====================start===========================-->
+    <bean id="dateConverter" class="com.demo.converter.DateConverter">
+        <property name="pattern" value="yyyy/MM/dd HH:mm:ss"></property>
+    </bean>
+    <!--把自定义日期类型的转换器注册到转换器工厂中-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <ref bean="dateConverter"/>
+            </set>
+        </property>
+    </bean>
+    <!--自定义日期类型的转换器2/3=====================END===========================-->
+
+    <!--捕获异常统一处理egtwo:3/3===============start==========================-->
+    <bean class="com.demo.exception.handler.global.egtwo.myexceptionResolver.MyExceptionResolver"></bean>
+    <!--捕获异常统一处理egtwo:3/3===============end==========================-->
+
+    <!-- 通过Mvc标签完成springMVC拦截器的配置 -->
+    <!--<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>&lt;!&ndash; 拦截的请求 &ndash;&gt;
+
+            <mvc:exclude-mapping path="/login.do"/>&lt;!&ndash; 忽略掉的请求 &ndash;&gt;
+
+            <bean class="com.demo.web.interceptor.myInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+    <!-- 文件上传的配置 ,id名字必须是multipartResolver-->
+   <!-- <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"></bean>
+    &lt;!&ndash; 文件上传的路径 new String("/upload") &ndash;&gt;
+    &lt;!&ndash; 这种方法一般不用 ，在实际开发时，一般会对文件上传的类进行封装在自己的类中，再对上传的文件夹进行配置&ndash;&gt;
+    <bean class="java.lang.String">
+        <constructor-arg value="/productImages"></constructor-arg>
+    </bean>-->
+
+    <!--fastJson配置-->
+    <!--<mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"></bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>-->
+
+
+</beans>
